@@ -1,0 +1,376 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #0f172a;
+  overflow: hidden;
+}
+
+/* Map Container */
+.container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  cursor: grab;
+}
+
+.container:active {
+  cursor: grabbing;
+}
+
+.map-svg {
+  transform-origin: 0 0;
+}
+
+/* Markers */
+.marker-group {
+  cursor: pointer;
+}
+
+.marker-circle {
+  transition: r 0.15s ease, filter 0.15s ease;
+}
+
+.marker-group:hover .marker-circle {
+  r: 24;
+}
+
+.marker-label {
+  font-size: 12px;
+  font-weight: bold;
+  fill: white;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+.building-label {
+  font-size: 9px;
+  fill: rgba(255, 255, 255, 0.4);
+  font-family: system-ui;
+}
+
+.road-label {
+  font-size: 8px;
+  fill: rgba(255, 255, 255, 0.25);
+  font-family: system-ui;
+}
+
+/* Zoom Controls */
+.zoom-controls {
+  position: fixed;
+  bottom: 80px;
+  right: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 50;
+}
+
+.zoom-btn {
+  width: 36px;
+  height: 36px;
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zoom-btn:hover {
+  background: rgba(50, 61, 79, 0.95);
+}
+
+#reset-view {
+  font-size: 12px;
+}
+
+/* Popup Overlay */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 99;
+  display: none;
+}
+
+.popup-overlay.active {
+  display: block;
+}
+
+/* Popup */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #1e293b;
+  border-radius: 16px;
+  padding: 20px;
+  color: white;
+  max-width: 360px;
+  width: 90%;
+  z-index: 100;
+  display: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.popup.active {
+  display: block;
+}
+
+.popup-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.popup-close:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.popup-type {
+  font-size: 10px;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: white;
+}
+
+.type-campus {
+  background: #f97316;
+}
+
+.type-energy {
+  background: #eab308;
+}
+
+.popup h3 {
+  font-size: 18px;
+  margin-bottom: 4px;
+  color: white;
+}
+
+.popup-sub {
+  font-size: 11px;
+  color: white;
+  margin-bottom: 12px;
+}
+
+/* AQI Display */
+.aqi-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.aqi-badge {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.aqi-good {
+  background: #22c55e;
+}
+
+.aqi-moderate {
+  background: #eab308;
+}
+
+.aqi-badge .num {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+}
+
+.aqi-badge .lbl {
+  font-size: 9px;
+  opacity: 1;
+  color: white;
+}
+
+.aqi-info .level {
+  font-weight: 600;
+  font-size: 14px;
+  color: white;
+}
+
+.aqi-info .trend {
+  font-size: 11px;
+  color: white;
+}
+
+/* Data Grid */
+.data-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.data-item {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.data-item .label {
+  font-size: 9px;
+  color: white;
+  text-transform: uppercase;
+}
+
+.data-item .value {
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+}
+
+/* Story Box */
+.story {
+  background: linear-gradient(to right, rgba(249, 115, 22, 0.15), transparent);
+  border-left: 3px solid #f97316;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: white;
+}
+
+/* Info Panel */
+.info-panel {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  background: rgba(30, 41, 59, 0.95);
+  padding: 14px;
+  border-radius: 12px;
+  color: white;
+  z-index: 50;
+  max-width: 200px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-panel h3 {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: white;
+}
+
+.info-panel p {
+  font-size: 9px;
+  color: white;
+  line-height: 1.4;
+}
+
+.campus-avg {
+  margin-top: 10px;
+  padding: 8px;
+  background: rgba(34, 197, 94, 0.1);
+  border-radius: 8px;
+}
+
+.campus-avg .label {
+  font-size: 8px;
+  color: white;
+  display: block;
+}
+
+.campus-avg .value {
+  font-size: 22px;
+  font-weight: bold;
+  color: #4ade80;
+  display: block;
+}
+
+.campus-avg .sub {
+  font-size: 9px;
+  color: #4ade80;
+  display: block;
+}
+
+/* Legend */
+.legend {
+  position: fixed;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(30, 41, 59, 0.95);
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  z-index: 50;
+  font-size: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.legend h4 {
+  margin-bottom: 5px;
+  font-size: 12px;
+  color: white;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 4px;
+}
+
+.legend-item span {
+  color: white;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.green-dot {
+  background: #22c55e;
+}
+
+.yellow-dot {
+  background: #eab308;
+}
+
+/* Hint */
+.hint {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(30, 41, 59, 0.9);
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  z-index: 50;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
